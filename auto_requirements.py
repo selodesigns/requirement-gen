@@ -3,11 +3,11 @@ import ast
 import sys
 from pathlib import Path
 
+# Built-in and standard library modules
 try:
     from stdlib_list import stdlib_list
     stdlib_modules = set(stdlib_list(sys.version[:3]))
 except ImportError:
-
     import sysconfig
     stdlib_path = sysconfig.get_paths()["stdlib"]
     stdlib_modules = set(sys.builtin_module_names)
@@ -66,7 +66,6 @@ known_package_aliases = {
 likely_internal_modules = {
     "api", "config", "core", "self_learning_api", "selo_client", "selo_desktop", "utilities", "ui"
 }
->>>>>>> 1170d0c (Add auto_requirements.py to generate clean requirements.txt)
 
 def find_python_files(root_dir):
     for root, _, files in os.walk(root_dir):
@@ -90,12 +89,6 @@ def extract_imports_from_file(filepath):
                 imports.add(node.module.split('.')[0])
     return imports
 
-<<<<<<< HEAD
-def get_installed_versions():
-    return {dist.metadata["Name"].lower(): dist.version for dist in distributions()}
-
-=======
->>>>>>> 1170d0c (Add auto_requirements.py to generate clean requirements.txt)
 def main(project_dir="."):
     all_imports = set()
     for py_file in find_python_files(project_dir):
@@ -103,31 +96,6 @@ def main(project_dir="."):
 
     third_party_imports = {
         imp for imp in all_imports
-<<<<<<< HEAD
-        if imp not in stdlib_modules and not imp.startswith('_')
-    }
-
-    installed_versions = get_installed_versions()
-    requirements = []
-
-    for module in sorted(third_party_imports):
-        pkg_lower = module.lower()
-        if pkg_lower in installed_versions:
-            version = installed_versions[pkg_lower]
-            requirements.append(f"{module}=={version}")
-        else:
-            print(f"⚠️ Warning: Package '{module}' is imported but not installed.")
-
-    # Output
-    with open("requirements.txt", "w") as req_file:
-        req_file.write("\n".join(requirements))
-    
-    print("✅ requirements.txt generated successfully.")
-
-if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser(description="Auto-generate requirements.txt from Python project")
-=======
         if imp not in stdlib_modules and imp not in likely_internal_modules and not imp.startswith('_')
     }
 
@@ -147,7 +115,6 @@ if __name__ == "__main__":
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Scan Python project and generate cleaned requirements.txt")
->>>>>>> 1170d0c (Add auto_requirements.py to generate clean requirements.txt)
     parser.add_argument("project_dir", nargs="?", default=".", help="Project directory to scan")
     args = parser.parse_args()
     main(args.project_dir)
